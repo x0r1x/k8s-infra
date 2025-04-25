@@ -19,9 +19,3 @@ variable "yc_sa_key" {
   sensitive = true
   description = "Service Account key"
 }
-
-variable "yc_s3_bucket" {
-  type = string
-  sensitive = true
-  description = "Bucket for tfstate"
-}
