@@ -29,7 +29,7 @@ jobs:
       - name: Terraform Init
         run: |
           terraform init -reconfigure \
-            -backend-config="bucket=TF_VAR_YC_S3_BUCKET"
+            -backend-config="bucket=$TF_VAR_YC_S3_BUCKET"
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
