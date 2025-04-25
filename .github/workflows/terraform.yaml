@@ -32,4 +32,4 @@ jobs:
             -backend-config="bucket=$TF_VAR_YC_S3_BUCKET"
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -input=false
