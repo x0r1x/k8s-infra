@@ -27,7 +27,9 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        run: terraform init
+        run: |
+          terraform init -reconfigure \
+            -backend-config="bucket=TF_VAR_YC_S3_BUCKET"
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
