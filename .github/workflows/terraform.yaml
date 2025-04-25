@@ -12,22 +12,11 @@ jobs:
     environment: production
 
     steps:
-      # Шаги из предыдущего примера для Terraform
       - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
-
-      - name: Debug Variables
-        run: |
-          echo "TF_VAR_YC_CLOUD_ID: $TF_VAR_YC_CLOUD_ID"
-          echo "TF_VAR_YC_FOLDER_ID: $TF_VAR_YC_FOLDER_ID"
-          echo "TF_VAR_YC_S3_BUCKET: $TF_VAR_YC_S3_BUCKET"
-        env:
-          TF_VAR_YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
-          TF_VAR_YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
-          TF_VAR_YC_S3_BUCKET: ${{ secrets.YC_S3_BUCKET }}
 
       - name: Terraform Init
         env:
