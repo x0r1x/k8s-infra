@@ -85,6 +85,7 @@ jobs:
       - name: Install Ansible
         run: |
           pip install --upgrade pip
+          pip install yamllint ansible-lint
           pip install -r kubespray/requirements.txt
 
       - name: Configure SSH
@@ -96,9 +97,32 @@ jobs:
       - name: Preparing Kubespray
         working-directory: ./kubespray
         run: |
+          # Создаем директорию инвентаря
           mkdir -p inventory/$K8S_CLUSTER_NAME
-          cp -rfp inventory/sample inventory/$K8S_CLUSTER_NAME
-          mv ${{ github.workspace }}/tmp/inventory/hosts.yml inventory/$K8S_CLUSTER_NAME/
+          
+          # Копируем шаблонные файлы
+          cp -rfp inventory/sample/* inventory/$K8S_CLUSTER_NAME/
+          
+          # Копируем наш инвентарь в директорию Kubespray
+          cp "${{ github.workspace }}/tmp/inventory/hosts.yml" "inventory/$K8S_CLUSTER_NAME/hosts.yml"
+          
+          # Проверяем существование файла
+          ls -la inventory/$K8S_CLUSTER_NAME/
+          test -f inventory/$K8S_CLUSTER_NAME/hosts.yml || exit 1
+  
+      - name: Validate Inventory
+        working-directory: ./kubespray
+        run: |
+          # Проверяем синтаксис YAML
+          yamllint inventory/$K8S_CLUSTER_NAME/hosts.yml
+          
+          # Проверяем структуру инвентаря
+          ansible-inventory -i inventory/$K8S_CLUSTER_NAME/hosts.yml --list
+
+      - name: Test SSH Connection
+        working-directory: ./kubespray
+        run: |
+          ansible -i inventory/$K8S_CLUSTER_NAME/hosts.yml all -m ping -u ${{ secrets.YC_SSH_USERNAME }}
 
       - name: Run Kubespray
         working-directory: ./kubespray
