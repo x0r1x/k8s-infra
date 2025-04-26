@@ -42,12 +42,19 @@ jobs:
       - name: Generate Inventory
         run: |
           mkdir -p tmp/inventory
-          terraform output -raw kubespray_inventory > tmp/inventory/hosts.yaml
+          terraform output -raw kubespray_inventory > tmp/inventory/hosts.yml
 
           # Debug вывод
           echo "=== DEBUG: INVENTORY CONTENTS ==="
-          cat tmp/inventory/hosts.yaml
+          cat tmp/inventory/hosts.yml
           echo "==============================="
+
+      - name: Upload Inventory
+        uses: actions/upload-artifact@v4
+        with:
+          name: kubespray-inventory
+          path: tmp/inventory/
+
 
   kubespray:
     name: "Deploy Kubernetes"
@@ -56,6 +63,12 @@ jobs:
     environment: production
 
     steps:
+      - name: Download Inventory
+        uses: actions/download-artifact@v4
+        with:
+          name: kubespray-inventory
+          path: tmp/inventory/
+
       - name: Checkout Kubespray
         uses: actions/checkout@v4
         with:
@@ -85,12 +98,12 @@ jobs:
         run: |
           mkdir -p inventory/$K8S_CLUSTER_NAME
           cp -rfp inventory/sample inventory/$K8S_CLUSTER_NAME
-          mv /tmp/hosts.yml inventory/$K8S_CLUSTER_NAME/
+          mv tmp/inventory/hosts.yml inventory/$K8S_CLUSTER_NAME/
 
       - name: Run Kubespray
         working-directory: ./kubespray
         run: |
-          ansible-playbook -i ../inventory/$K8S_CLUSTER_NAME/hosts.yaml \
+          ansible-playbook -i ../inventory/$K8S_CLUSTER_NAME/hosts.yml \
             --private-key ~/.ssh/id_rsa \
             -u ${{ secrets.YC_SSH_USERNAME }} \
             -b --become-user=root \
