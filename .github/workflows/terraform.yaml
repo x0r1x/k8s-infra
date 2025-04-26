@@ -98,7 +98,7 @@ jobs:
         run: |
           mkdir -p inventory/$K8S_CLUSTER_NAME
           cp -rfp inventory/sample inventory/$K8S_CLUSTER_NAME
-          mv tmp/inventory/hosts.yml inventory/$K8S_CLUSTER_NAME/
+          mv ../tmp/inventory/hosts.yml inventory/$K8S_CLUSTER_NAME/
 
       - name: Run Kubespray
         working-directory: ./kubespray
