@@ -12,4 +12,4 @@ registry = {
   repository_name = "test-app"
 }
 
-family_id = "ubuntu-2404-lts-oslogin"
+source_image = "fd84b1mojb8650b9luqd"

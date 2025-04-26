@@ -7,7 +7,7 @@ terraform {
 }
 
 resource "yandex_compute_image" "vm_images" {
-  family   = var.family_id
+  source_image = var.source_image
 }
 
 resource "yandex_compute_instance_group" "master" {

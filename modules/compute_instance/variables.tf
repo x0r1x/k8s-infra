@@ -26,7 +26,7 @@ variable "node_count" {
   default     = 2
 }
 
-variable "family_id" {
+variable "source_image" {
   type = string
 }
 

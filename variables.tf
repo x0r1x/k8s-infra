@@ -50,7 +50,7 @@ variable "registry" {
   })
 }
 
-variable "family_id" {
+variable "source_image" {
   type = string
   description = "Image family Id"
 }

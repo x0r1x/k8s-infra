@@ -47,7 +47,7 @@ module "container_registry" {
 module "compute_instance" {
   source = "./modules/compute_instance"
 
-  family_id = var.family_id
+  source_image = var.source_image
   network_id = module.network.network_id
   subnet_ids = module.network.subnet_ids
   zones = module.network.zones
