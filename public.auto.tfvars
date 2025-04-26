@@ -11,3 +11,5 @@ registry = {
   registry_name = "app-registry"
   repository_name = "test-app"
 }
+
+family_id = "ubuntu-2404-lts-oslogin"

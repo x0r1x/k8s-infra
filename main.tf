@@ -43,3 +43,16 @@ module "container_registry" {
   registry_name      = var.registry.registry_name
   repository_name    = var.registry.repository_name
 }
+
+module "compute_instance" {
+  source = "./modules/compute_instance"
+
+  family_id = var.family_id
+  network_id = module.network
+  subnet_ids = module.network.subnet_ids
+  zones = module.network.zones
+  security_group_id = module.network.security_group_id
+  ssh_username = var.ssh_username
+  ssh_public_key = var.ssh_public_key
+  service_account_id = var.yc_sa_id
+}

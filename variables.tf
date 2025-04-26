@@ -14,10 +14,26 @@ variable "yc_default_zone" {
   description = "Default availability zone"
 }
 
+variable "yc_sa_id" {
+  type = string
+  sensitive = true
+}
+
 variable "yc_sa_key" {
   type = string
   sensitive = true
   description = "Service Account key"
+}
+
+variable "ssh_public_key" {
+  type = string
+  sensitive = true
+  description = "SSH public key"
+}
+
+variable "ssh_username" {
+  type = string
+  description = "SSH username"
 }
 
 variable "network" {
@@ -32,4 +48,9 @@ variable "registry" {
     registry_name = string
     repository_name = string
   })
+}
+
+variable "family_id" {
+  type = string
+  description = "Image family Id"
 }
