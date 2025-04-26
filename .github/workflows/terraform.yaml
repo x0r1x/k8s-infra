@@ -48,3 +48,48 @@ jobs:
           echo "=== DEBUG: INVENTORY CONTENTS ==="
           cat tmp/inventory/hosts.yaml
           echo "==============================="
+
+  kubespray:
+    name: "Deploy Kubernetes"
+    runs-on: ubuntu-latest
+    needs: terraform
+    environment: production
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          path: kubespray
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install Ansible
+        run: |
+          pip install --upgrade pip
+          pip install -r kubespray/requirements.txt
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.YC_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Preparing Kubespray
+        working-directory: ./kubespray
+        run: |
+          mkdir -p inventory/$K8S_CLUSTER_NAME
+          cp -rfp inventory/sample inventory/$K8S_CLUSTER_NAME
+          mv /tmp/hosts.yml inventory/$K8S_CLUSTER_NAME/
+
+      - name: Run Kubespray
+        working-directory: ./kubespray
+        run: |
+          ansible-playbook -i ../inventory/$K8S_CLUSTER_NAME/hosts.yaml \
+            --private-key ~/.ssh/id_rsa \
+            -u ${{ secrets.YC_SSH_USERNAME }} \
+            -b --become-user=root \
+            cluster.yml
