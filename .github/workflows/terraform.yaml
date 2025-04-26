@@ -127,7 +127,7 @@ jobs:
       - name: Run Kubespray
         working-directory: ./kubespray
         run: |
-          ansible-playbook -i ../inventory/$K8S_CLUSTER_NAME/hosts.yml \
+          ansible-playbook -i inventory/$K8S_CLUSTER_NAME/hosts.yml \
             --private-key ~/.ssh/id_rsa \
             -u ${{ secrets.YC_SSH_USERNAME }} \
             -b --become-user=root \
