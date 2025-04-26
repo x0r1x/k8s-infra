@@ -56,16 +56,18 @@ jobs:
     environment: production
 
     steps:
-      - name: Checkout Code
+      - name: Checkout Kubespray
         uses: actions/checkout@v4
         with:
-          submodules: recursive
+          repository: kubernetes-sigs/kubespray
+          ref: master
           path: kubespray
+          submodules: recursive
 
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
+          python-version: '3.10'
 
       - name: Install Ansible
         run: |
