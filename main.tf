@@ -22,10 +22,16 @@ terraform {
   }
 }
 
-
 provider "yandex" {
   cloud_id  = var.yc_cloud_id
   folder_id = var.yc_folder_id
   zone      = var.yc_default_zone
   service_account_key_file = base64decode(var.yc_sa_key)
+}
+
+module "network" {
+  source = "./modules/network"
+
+  network_name    = var.network.network_name
+  subnets_config  = var.network.subnets
 }

@@ -19,3 +19,10 @@ variable "yc_sa_key" {
   sensitive = true
   description = "Service Account key"
 }
+
+variable "network" {
+  type = object({
+    network_name = string
+    subnets = map(string)
+  })
+}
