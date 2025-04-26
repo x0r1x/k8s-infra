@@ -2,15 +2,15 @@ all:
   hosts:
 %{ for i, ip in master_private_ips ~}
     master${i+1}:
-      ansible_host: ${ip}
+      ansible_host: ${master_public_ips[ip]}
       ip: ${ip}
-      access_ip: ${ip}
+      access_ip: ${master_public_ips[ip]}
 %{ endfor ~}
 %{ for i, ip in node_private_ips ~}
     node${i+1}:
-      ansible_host: ${ip}
+      ansible_host: ${node_public_ips[ip]}
       ip: ${ip}
-      access_ip: ${ip}
+      access_ip: ${node_public_ips[ip]}
 %{ endfor ~}
   vars:
     supplementary_addresses_in_ssl_keys:
@@ -21,13 +21,13 @@ all:
 
 kube_control_plane:
   hosts:
-%{ for i, ip in master_private_ips ~}
+%{ for i, ip in master_public_ips ~}
     master${i+1}: {}
 %{ endfor ~}
 
 kube_node:
   hosts:
-%{ for i, ip in node_private_ips ~}
+%{ for i, ip in node_public_ips ~}
     node${i+1}: {}
 %{ endfor ~}
 
