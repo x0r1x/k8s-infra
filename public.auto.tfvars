@@ -7,3 +7,7 @@ network = {
   }
 }
 
+registry = {
+  registry_name = "app-registry"
+  repository_name = "test-app"
+}

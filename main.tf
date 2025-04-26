@@ -35,3 +35,11 @@ module "network" {
   network_name    = var.network.network_name
   subnets_config  = var.network.subnets
 }
+
+module "container_registry" {
+  source = "./modules/container_registry"
+
+  folder_id          = var.yc_folder_id
+  registry_name      = var.registry.registry_name
+  repository_name    = var.registry.repository_name
+}

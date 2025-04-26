@@ -26,3 +26,10 @@ variable "network" {
     subnets = map(string)
   })
 }
+
+variable "registry" {
+  type = object({
+    registry_name = string
+    repository_name = string
+  })
+}
