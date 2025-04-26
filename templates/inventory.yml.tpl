@@ -2,15 +2,15 @@ all:
   hosts:
 %{ for i, ip in master_private_ips ~}
     master${i+1}:
-      ansible_host: ${master_public_ips[ip]}
+      ansible_host: ${master_public_ips[i]}
       ip: ${ip}
-      access_ip: ${master_public_ips[ip]}
+      access_ip: ${master_public_ips[i]}
 %{ endfor ~}
 %{ for i, ip in node_private_ips ~}
     node${i+1}:
-      ansible_host: ${node_public_ips[ip]}
+      ansible_host: ${node_public_ips[i]}
       ip: ${ip}
-      access_ip: ${node_public_ips[ip]}
+      access_ip: ${node_public_ips[i]}
 %{ endfor ~}
   vars:
     supplementary_addresses_in_ssl_keys:
