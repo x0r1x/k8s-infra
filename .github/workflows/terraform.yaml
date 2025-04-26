@@ -35,3 +35,17 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -auto-approve -input=false
+
+      - name: Generate Inventory
+        run: |
+          mkdir -p inventory/mycluster
+          terraform output -json instance_ips | jq -r '.[]' > instances.txt
+          python3 contrib/inventory_builder/inventory.py $(cat instances.txt) \
+            > inventory/mycluster/hosts.yaml
+
+          # Debug вывод
+          echo "=== DEBUG: INVENTORY CONTENTS ==="
+          cat inventory/mycluster/hosts.yaml
+          echo "=== DEBUG: RAW INSTANCE IPS ==="
+          cat instances.txt
+          echo "==============================="
