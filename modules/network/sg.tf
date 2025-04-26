@@ -11,6 +11,18 @@ resource "yandex_vpc_security_group" "k8s_sg" {
   }
 
   ingress {
+    protocol          = "ICMP"
+    description       = "ICMP"
+    predefined_target = "self_security_group"
+  }
+
+  ingress {
+    protocol          = "ANY"
+    description       = "any traffic inside group"
+    predefined_target = "self_security_group"
+  }
+
+  ingress {
     protocol       = "TCP"
     description    = "Kubernetes API server"
     port          = 6443
