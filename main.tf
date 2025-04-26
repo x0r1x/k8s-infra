@@ -48,7 +48,7 @@ module "compute_instance" {
   source = "./modules/compute_instance"
 
   family_id = var.family_id
-  network_id = module.network
+  network_id = module.network.network_id
   subnet_ids = module.network.subnet_ids
   zones = module.network.zones
   security_group_id = module.network.security_group_id
