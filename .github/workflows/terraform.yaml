@@ -175,11 +175,7 @@ jobs:
         working-directory: ./kubespray
         run: |
           # Получаем внешний IP из инвентаря
-          EXTERNAL_IP=$(ansible -i inventory/$K8S_CLUSTER_NAME/hosts.yml master1 \
-            -m debug \
-            -a "var=hostvars[inventory_hostname].ansible_host" | 
-            grep 'hostvars\[inventory_hostname\].ansible_host' | 
-            awk -F'"' '{print $2}')
+          EXTERNAL_IP=$(ansible-inventory -i inventory/yc-k8s-cluster/hosts.yml --list | jq -r '.all.hosts.master1.ansible_host')
 
           echo "Detected External IP: $EXTERNAL_IP"
           
