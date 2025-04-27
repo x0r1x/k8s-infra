@@ -50,7 +50,7 @@ resource "yandex_alb_load_balancer" "alb" {
 
     allocation_policy {
         dynamic location {
-            for_each = yandex_compute_instance_group.master.instances
+            for_each = yandex_compute_instance_group.node.instances
             content {
                 zone_id   = location.value.zone_id
                 subnet_id = location.value.network_interface[0].subnet_id

@@ -68,7 +68,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           sparse-checkout: |
-            resources/
+            resources/k8s/
           sparse-checkout-cone-mode: true
 
       - name: Download Inventory
@@ -120,8 +120,8 @@ jobs:
           tree ${{ github.workspace }}/resources
 
           echo "=== Copy custom group_vars ==="
-          cp -f ${{ github.workspace }}/resources/group_vars/k8s_cluster/addons.yml inventory/$K8S_CLUSTER_NAME/group_vars/k8s_cluster/addons.yml
-          cp -f ${{ github.workspace }}/resources/group_vars/all/all.yml inventory/$K8S_CLUSTER_NAME/group_vars/all/all.yml 
+          cp -f ${{ github.workspace }}/resources/k8s/group_vars/k8s_cluster/addons.yml inventory/$K8S_CLUSTER_NAME/group_vars/k8s_cluster/addons.yml
+          cp -f ${{ github.workspace }}/resources/k8s/group_vars/all/all.yml inventory/$K8S_CLUSTER_NAME/group_vars/all/all.yml 
           
           # Копируем наш инвентарь в директорию Kubespray
           echo "=== Copy inventory file ==="
@@ -158,3 +158,21 @@ jobs:
             -u ${{ secrets.YC_SSH_USERNAME }} \
             -b --become-user=root \
             cluster.yml
+
+      - name: Update Kubeconfig Server Address
+        working-directory: ./kubespray
+        run: |
+          mkdir -p tmp/kubeconfig
+          cp -f /etc/kubernetes/admin.conf ${{ github.workspace }}/tmp/kubeconfig/admin.conf
+
+          # Получаем внешний IP из инвентаря
+          EXTERNAL_IP=$(ansible-inventory -i inventory/$K8S_CLUSTER_NAME/hosts.yml --list | jq -r '.all.hosts.master1.ansible_host')
+          
+          # Заменяем внутренний адрес на внешний
+          sed -i "s|server:.*|server: https://${EXTERNAL_IP}:6443|g" ${{ github.workspace }}/tmp/kubeconfig/admin.conf
+  
+      - name: Upload Modified Kubeconfig
+        uses: actions/upload-artifact@v4
+        with:
+          name: kubeconfig
+          path: ${{ github.workspace }}/tmp/kubeconfig/
