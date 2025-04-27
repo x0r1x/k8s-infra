@@ -9,7 +9,7 @@ spec:
   rules:
   - http:
       paths:
-      - path: /grafana
+      - path: /grafana(/|$)(.*)
         pathType: Prefix
         backend:
           service:

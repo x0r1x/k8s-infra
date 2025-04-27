@@ -5,10 +5,13 @@ grafana:
   ingress:
     enabled: true
     ingressClassName: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /$2
+      nginx.ingress.kubernetes.io/proxy-body-size: "50m"
     hosts:
       - ""
     paths:
-      - /grafana
+      - /grafana(/|$)(.*)
     pathType: Prefix
 
 prometheus:
