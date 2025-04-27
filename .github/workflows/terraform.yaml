@@ -153,8 +153,6 @@ jobs:
       - name: Run Kubespray
         working-directory: ./kubespray
         run: |
-          mkdir -p tmp/kubeconfig
-
           # Запускаем kubespray
           ansible-playbook -i inventory/$K8S_CLUSTER_NAME/hosts.yml \
             --private-key ~/.ssh/id_rsa \
