@@ -3,7 +3,6 @@ grafana:
   # Настройки Grafana.ini через отдельную секцию
   grafana.ini:
     server:
-      root_url: "http://158.160.173.65/grafana/"  # Явно указываем IP + путь
       serve_from_sub_path: true  # Включаем обработку подпутей
   # Настройки сервиса
   service:
