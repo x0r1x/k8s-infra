@@ -218,8 +218,11 @@ jobs:
 
         - name: Rename Kubeconfig
           run: |
+            ls -la /tmp/kubeconfig/
+            ls -la ${{ github.workspace }}/tmp/kubeconfig/
+
             mkdir -p ~/.kube
-            cp -f ${{ github.workspace }}/kubeconfig/admin.conf ~/.kube/config
+            cp -f /tmp/kubeconfig/admin.conf ~/.kube/config
             chmod 600 ~/.kube/config
 
             # Проверяем существование файла
