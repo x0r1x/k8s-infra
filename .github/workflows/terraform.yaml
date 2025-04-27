@@ -108,21 +108,38 @@ jobs:
           # Создаем директорию инвентаря
           mkdir -p inventory/$K8S_CLUSTER_NAME
 
-          echo "=== Repository structure ==="
-          tree ${{ github.workspace }}/resources
-          tree ${{ github.workspace }}/tmp
-          test -f ${{ github.workspace }}/resources/group_vars/all/all.yml || exit 1
-          test -f ${{ github.workspace }}/resources/group_vars/k8s_cluster/addons.yml || exit 1
-          
           # Копируем шаблонные файлы
+          echo "=== Copy config template ==="
           cp -rfp inventory/sample/* inventory/$K8S_CLUSTER_NAME/
-          cp -f ${{ github.workspace }}/resources/group_vars/k8s_cluster/addons.yml inventory/$K8S_CLUSTER_NAME/group_vars/k8s_cluster/addons.yml
-          cp -f ${{ github.workspace }}/resources/group_vars/all/all.yml inventory/$K8S_CLUSTER_NAME/group_vars/all/all.yml          
+
+      - name: Config Kubespray
+        working-directory: ./kubespray
+        run: |
+          echo "=== Check repository structure ==="
+          tree ${{ github.workspace }}/tmp
+          tree ${{ github.workspace }}/resources
+          
+          echo "=== Copy custom group_vars ==="
+          SRC_DIR="${{ github.workspace }}/resources/group_vars"
+          DST_DIR="inventory/$K8S_CLUSTER_NAME/group_vars"
+          
+          # Создаем базовую структуру каталогов
+          mkdir -p $DST_DIR
+          
+          # Рекурсивное копирование с сохранением структуры
+          if [ -d "$SRC_DIR" ]; then
+            find "$SRC_DIR" -type d -exec mkdir -p "$DST_DIR/{}" \;
+            find "$SRC_DIR" -type f -exec cp -fp "{}" "$DST_DIR/{}" \;
+          else
+            echo "Warning: No group_vars directory found in resources"
+          fi          
           
           # Копируем наш инвентарь в директорию Kubespray
+          echo "=== Copy inventory file ==="
           cp -f ${{ github.workspace }}/tmp/inventory/hosts.yml inventory/$K8S_CLUSTER_NAME/hosts.yml
           
           # Проверяем существование файла
+          echo "=== Check inventory file ==="
           ls -la inventory/$K8S_CLUSTER_NAME/
           test -f inventory/$K8S_CLUSTER_NAME/hosts.yml || exit 1
 
