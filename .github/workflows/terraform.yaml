@@ -102,25 +102,8 @@ jobs:
           
           # Копируем шаблонные файлы
           cp -rfp inventory/sample/* inventory/$K8S_CLUSTER_NAME/
-
-          # Проверяем результат
-          echo "=== Final group_vars structure ==="
-          tree inventory/$K8S_CLUSTER_NAME
-
-          # Копируем кастомные group_vars с сохранением структуры
-          if [ -d "${{ github.workspace }}/resources/group_vars" ]; then
-            find "${{ github.workspace }}/resources/group_vars" -type f -name "*.yml" | while read file; do
-              # Формируем относительный путь
-              rel_path=${file#${{ github.workspace }}/resources/group_vars/}
-              
-              # Создаем целевую директорию
-              dest_dir="inventory/$K8S_CLUSTER_NAME/group_vars/$(dirname "$rel_path")"
-              mkdir -p "$dest_dir"
-              
-              # Копируем файл
-              cp -fv "$file" "$dest_dir/$(basename "$file")"
-            done
-          fi
+          mv -f ${{ github.workspace }}/resources/group_vars/k8s_cluster/addons.yml inventory/$CLUSTER_NAME/group_vars/k8s_cluster/addons.yml
+          mv -f ${{ github.workspace }}/resources/group_vars/all/all.yml inventory/$CLUSTER_NAME/group_vars/all/all.yml          
           
           # Копируем наш инвентарь в директорию Kubespray
           cp -f "${{ github.workspace }}/tmp/inventory/hosts.yml" "inventory/$K8S_CLUSTER_NAME/hosts.yml"
