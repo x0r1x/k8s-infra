@@ -244,7 +244,7 @@ jobs:
 
         - name: Deploy kube-prometheus-stack
           run: |
-            helm upgrade --install --atomic kube-prom-stack prometheus-community/kube-prometheus-stack \
+            helm upgrade --install --force --atomic kube-prom-stack prometheus-community/kube-prometheus-stack \
               -f ${{ github.workspace }}/resources/monitoring/values.yml  \
               --create-namespace \
               -n monitoring \
