@@ -11,17 +11,16 @@ grafana:
     port: 80  # Порт сервиса (ClusterIP/NodePort)
     targetPort: 3000  # Порт контейнера Grafana
   # Настройки Ingress
-  ingress:
-    enabled: true
-    ingressClassName: nginx
-    annotations:
-      nginx.ingress.kubernetes.io/rewrite-target: /
-      nginx.ingress.kubernetes.io/proxy-body-size: "50m"
-    hosts:
-      - ""
-    paths:
-      - path: /grafana
-        pathType: Prefix
+  # ingress:
+  #   enabled: true
+  #   ingressClassName: nginx
+  #   annotations:
+  #     nginx.ingress.kubernetes.io/rewrite-target: /
+  #   hosts:
+  #     - ""
+  #   paths:
+  #     - path: /grafana
+  #       pathType: Prefix
 
 prometheus:
   penabled: true
