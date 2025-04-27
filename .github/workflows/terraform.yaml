@@ -63,11 +63,6 @@ jobs:
     environment: production
 
     steps:
-      - name: Download Inventory
-        uses: actions/download-artifact@v4
-        with:
-          name: kubespray-inventory
-          path: tmp/inventory/
 
       - name: Checkout Resources
         uses: actions/checkout@v4
@@ -75,7 +70,12 @@ jobs:
           sparse-checkout: |
             resources/
           sparse-checkout-cone-mode: true
-          fetch-depth: 0
+
+      - name: Download Inventory
+        uses: actions/download-artifact@v4
+        with:
+          name: kubespray-inventory
+          path: tmp/inventory/
 
       - name: Checkout Kubespray
         uses: actions/checkout@v4
