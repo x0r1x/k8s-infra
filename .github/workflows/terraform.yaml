@@ -69,6 +69,9 @@ jobs:
           name: kubespray-inventory
           path: tmp/inventory/
 
+      - name: Checkout Current Repository
+        uses: actions/checkout@v4
+
       - name: Checkout Kubespray
         uses: actions/checkout@v4
         with:
