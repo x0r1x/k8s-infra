@@ -110,7 +110,7 @@ jobs:
 
           echo "=== Repository structure ==="
           tree ${{ github.workspace }}/resources
-          tree "${{ github.workspace }}/tmp
+          tree ${{ github.workspace }}/tmp
           test -f ${{ github.workspace }}/resources/group_vars/all/all.yml || exit 1
           test -f ${{ github.workspace }}/resources/group_vars/k8s_cluster/addons.yml || exit 1
           
@@ -120,7 +120,7 @@ jobs:
           cp -f ${{ github.workspace }}/resources/group_vars/all/all.yml inventory/$K8S_CLUSTER_NAME/group_vars/all/all.yml          
           
           # Копируем наш инвентарь в директорию Kubespray
-          cp -f "${{ github.workspace }}/tmp/inventory/hosts.yml" "inventory/$K8S_CLUSTER_NAME/hosts.yml"
+          cp -f ${{ github.workspace }}/tmp/inventory/hosts.yml inventory/$K8S_CLUSTER_NAME/hosts.yml
           
           # Проверяем существование файла
           ls -la inventory/$K8S_CLUSTER_NAME/
