@@ -175,7 +175,13 @@ jobs:
         working-directory: ./kubespray
         run: |
           # Получаем внешний IP из инвентаря
-          EXTERNAL_IP=$(ansible-inventory -i inventory/$K8S_CLUSTER_NAME/hosts.yml --list | jq -r '.all.hosts.master1.ansible_host')
+          EXTERNAL_IP=$(ansible -i inventory/$K8S_CLUSTER_NAME/hosts.yml master1 \
+            -m debug \
+            -a "var=hostvars[inventory_hostname].ansible_host" | 
+            grep 'hostvars\[inventory_hostname\].ansible_host' | 
+            awk -F'"' '{print $2}')
+
+          echo "Detected External IP: $EXTERNAL_IP"
           
           # Заменяем внутренний адрес на внешний
           sed -i "s|server:.*|server: https://${EXTERNAL_IP}:6443|g" ${{ github.workspace }}/tmp/kubeconfig/admin.conf
