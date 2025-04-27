@@ -18,7 +18,7 @@ grafana:
       nginx.ingress.kubernetes.io/rewrite-target: /$2  #
       nginx.ingress.kubernetes.io/proxy-body-size: "50m"
     hosts:
-      - "158.160.173.65"
+      - ""
     paths:
       - path: /grafana(/|$)(.*)  # Регулярка для захвата пути
         pathType: Prefix
