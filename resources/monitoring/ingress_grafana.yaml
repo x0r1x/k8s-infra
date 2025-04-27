@@ -13,6 +13,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: monitoring-grafana
+            name: kube-prom-stack-grafana
             port:
               number: 80

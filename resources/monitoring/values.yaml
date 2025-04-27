@@ -8,6 +8,8 @@ grafana:
     paths:
       - /grafana
     pathType: Prefix
+  service:
+      type: ClusterIP
 
 prometheus:
   penabled: true
