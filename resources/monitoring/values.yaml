@@ -1,20 +1,18 @@
 grafana:
   enabled: true
+  adminPassword: "admin"
   service:
     type: ClusterIP
     port: 3000
-  ingress:
-    enabled: true
-    ingressClassName: nginx
-    annotations:
-      nginx.ingress.kubernetes.io/rewrite-target: /$2
-      nginx.ingress.kubernetes.io/proxy-body-size: "50m"
-      nginx.ingress.kubernetes.io/configuration-snippet: |
-        rewrite ^/grafana$ $scheme://$http_host/grafana/ permanent;
-    hosts:
-      - ""
-    paths:
-      - /grafana(/|$)(.*)
+  # ingress:
+  #   enabled: true
+  #   annotations: {}
+  #   labels: {}
+  #   ingressClassName: nginx
+  #   hosts:
+  #     - ""
+  #   paths:
+  #     - /grafana/*
     pathType: Prefix
 
 prometheus:

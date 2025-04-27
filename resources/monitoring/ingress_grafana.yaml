@@ -4,18 +4,17 @@ metadata:
   name: grafana-ingress
   namespace: monitoring
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      rewrite ^/grafana$ $scheme://$http_host/grafana/ permanent;
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
-  - http:
+  - host:
+    http:
       paths:
-      - path: /grafana(/|$)(.*)
+      - path: /grafana/*
         pathType: Prefix
         backend:
           service:
             name: kube-prom-stack-grafana
             port:
-              number: 3000
+              number: 80
