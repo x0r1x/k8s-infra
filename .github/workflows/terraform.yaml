@@ -219,8 +219,13 @@ jobs:
         - name: Rename Kubeconfig
           run: |
             mkdir -p ~/.kube
-            cp -f /tmp/kubeconfig/admin.conf ~/.kube/config
+            cp -f ${{ github.workspace }}/tmp/kubeconfig/admin.conf ~/.kube/config
             chmod 600 ~/.kube/config
+
+            # Проверяем существование файла
+            echo "=== Check config file ==="
+            ls -la ~/.kube
+            test -f ~/.kube/config || exit 1
 
         - name: Setup Helm
           uses: azure/setup-helm@v1
