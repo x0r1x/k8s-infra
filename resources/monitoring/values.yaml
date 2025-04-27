@@ -1,4 +1,7 @@
 grafana:
+  grafana.ini:
+    server:
+      root_url: "http://158.160.173.65/grafana/"
   enabled: true
   adminPassword: "admin"
   service:
