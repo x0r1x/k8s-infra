@@ -20,8 +20,8 @@ grafana:
     hosts:
       - ""
     paths:
-        - /grafana(/|$)(.*)
-    pathType: Prefix
+      - path: /grafana(/|$)(.*)
+        pathType: Prefix
 
 prometheus:
   penabled: true
