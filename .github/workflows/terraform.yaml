@@ -101,7 +101,7 @@ jobs:
           mkdir -p inventory/$K8S_CLUSTER_NAME
 
           echo "=== Repository structure ==="
-          tree ${{ github.workspace }}/resources
+          tree ${{ github.workspace }}
           test -f ${{ github.workspace }}/resources/group_vars/all/all.yml || exit 1
           test -f ${{ github.workspace }}/resources/group_vars/k8s_cluster/addons.yml || exit 1
           
