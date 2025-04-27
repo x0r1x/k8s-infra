@@ -1,0 +1,33 @@
+grafana:
+  enabled: true
+  # Настройки Grafana.ini через отдельную секцию
+  grafana.ini:
+    server:
+      root_url: "http://158.160.173.65/grafana/"  # Явно указываем IP + путь
+      serve_from_sub_path: true  # Включаем обработку подпутей
+  # Настройки сервиса
+  service:
+    type: ClusterIP
+    port: 80  # Порт сервиса (ClusterIP/NodePort)
+    targetPort: 3000  # Порт контейнера Grafana
+  # Настройки Ingress
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /$2  #
+      nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    hosts:
+      - "158.160.173.65"
+    paths:
+      - path: /grafana(/|$)(.*)  # Регулярка для захвата пути
+        pathType: Prefix
+
+prometheus:
+  penabled: true
+
+alertmanager:
+  enabled: true
+
+prometheus-node-exporter:
+  enabled: true

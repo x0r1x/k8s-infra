@@ -245,10 +245,10 @@ jobs:
         - name: Deploy kube-prometheus-stack
           run: |
             helm upgrade --install --atomic kube-prom-stack prometheus-community/kube-prometheus-stack \
-              -f ${{ github.workspace }}/resources/monitoring/ingress_grafana.yaml  \
+              -f ${{ github.workspace }}/resources/monitoring/values.yml  \
               --create-namespace \
               -n monitoring \
               --kubeconfig ~/.kube/config
 
-        - name: Deploy Grafana Ingress
-          run: kubectl apply -f ${{ github.workspace }}/resources/monitoring/ingress_grafana.yaml 
+        # - name: Deploy Grafana Ingress
+        #   run: kubectl apply -f ${{ github.workspace }}/resources/monitoring/ingress_grafana.yml 
