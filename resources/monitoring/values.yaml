@@ -1,0 +1,19 @@
+grafana:
+  enabled: true
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - ""
+    paths:
+      - /grafana
+    pathType: Prefix
+
+prometheus:
+  penabled: true
+
+alertmanager:
+  enabled: true
+
+prometheus-node-exporter:
+  enabled: true
