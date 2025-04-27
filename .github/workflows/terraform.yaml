@@ -150,15 +150,15 @@ jobs:
         run: |
           ansible -i inventory/$K8S_CLUSTER_NAME/hosts.yml all -m ping -u ${{ secrets.YC_SSH_USERNAME }}
 
-      - name: Run Kubespray
-        working-directory: ./kubespray
-        run: |
-          # Запускаем kubespray
-          ansible-playbook -i inventory/$K8S_CLUSTER_NAME/hosts.yml \
-            --private-key ~/.ssh/id_rsa \
-            -u ${{ secrets.YC_SSH_USERNAME }} \
-            -b --become-user=root \
-            cluster.yml
+      # - name: Run Kubespray
+      #   working-directory: ./kubespray
+      #   run: |
+      #     # Запускаем kubespray
+      #     ansible-playbook -i inventory/$K8S_CLUSTER_NAME/hosts.yml \
+      #       --private-key ~/.ssh/id_rsa \
+      #       -u ${{ secrets.YC_SSH_USERNAME }} \
+      #       -b --become-user=root \
+      #       cluster.yml
 
       - name: Retrieve Kubeconfig from Master
         working-directory: ./kubespray
@@ -175,7 +175,7 @@ jobs:
         working-directory: ./kubespray
         run: |
           # Получаем внешний IP из инвентаря
-          EXTERNAL_IP=$(ansible-inventory -i inventory/yc-k8s-cluster/hosts.yml --list | jq -r '.all.hosts.master1.ansible_host')
+          EXTERNAL_IP=$(grep -A5 'master1:' inventory/$K8S_CLUSTER_NAME/hosts.yml | grep 'ansible_host:' | awk '{print $2}')
 
           echo "Detected External IP: $EXTERNAL_IP"
           
