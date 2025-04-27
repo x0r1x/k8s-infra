@@ -153,8 +153,13 @@ jobs:
       - name: Run Kubespray
         working-directory: ./kubespray
         run: |
+          mkdir -p tmp/kubeconfig
+
+          # Запускаем kubespray
           ansible-playbook -i inventory/$K8S_CLUSTER_NAME/hosts.yml \
             --private-key ~/.ssh/id_rsa \
+            -m fetch \
+            -a "src=/etc/kubernetes/admin.conf dest=${{ github.workspace }}/tmp/kubeconfig/admin.conf flat=yes" \
             -u ${{ secrets.YC_SSH_USERNAME }} \
             -b --become-user=root \
             cluster.yml
@@ -162,9 +167,6 @@ jobs:
       - name: Update Kubeconfig Server Address
         working-directory: ./kubespray
         run: |
-          mkdir -p tmp/kubeconfig
-          cp -f /etc/kubernetes/admin.conf ${{ github.workspace }}/tmp/kubeconfig/admin.conf
-
           # Получаем внешний IP из инвентаря
           EXTERNAL_IP=$(ansible-inventory -i inventory/$K8S_CLUSTER_NAME/hosts.yml --list | jq -r '.all.hosts.master1.ansible_host')
           
