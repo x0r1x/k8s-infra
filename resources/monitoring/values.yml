@@ -21,7 +21,7 @@ grafana:
       - ""
     paths:
       - path: /grafana(/|$)(.*)
-        pathType: Prefix
+        pathType: ImplementationSpecific
 
 prometheus:
   penabled: true
