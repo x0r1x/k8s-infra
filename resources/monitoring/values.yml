@@ -20,8 +20,8 @@ grafana:
     hosts:
       - ""
     paths:
-      - path: /grafana(/|$)(.*)  # Регулярка для захвата пути
-        pathType: Prefix
+        - /grafana(/|$)(.*)
+    pathType: Prefix
 
 prometheus:
   penabled: true
