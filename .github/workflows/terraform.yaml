@@ -158,11 +158,19 @@ jobs:
           # Запускаем kubespray
           ansible-playbook -i inventory/$K8S_CLUSTER_NAME/hosts.yml \
             --private-key ~/.ssh/id_rsa \
-            -m fetch \
-            -a "src=/etc/kubernetes/admin.conf dest=${{ github.workspace }}/tmp/kubeconfig/admin.conf flat=yes" \
             -u ${{ secrets.YC_SSH_USERNAME }} \
             -b --become-user=root \
             cluster.yml
+
+      - name: Retrieve Kubeconfig from Master
+        working-directory: ./kubespray
+        run: |
+          mkdir -p ${{ github.workspace }}/tmp/kubeconfig
+          ansible -i inventory/$K8S_CLUSTER_NAME/hosts.yml kube_control_plane[0] \
+            -m fetch \
+            -a "src=/etc/kubernetes/admin.conf dest=${{ github.workspace }}/tmp/kubeconfig/admin.conf flat=yes" \
+            -u ${{ secrets.YC_SSH_USERNAME }} \
+            --private-key ~/.ssh/id_rsa
 
       - name: Update Kubeconfig Server Address
         working-directory: ./kubespray
