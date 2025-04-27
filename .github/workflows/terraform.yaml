@@ -103,6 +103,10 @@ jobs:
           # Копируем шаблонные файлы
           # cp -rfp inventory/sample/* inventory/$K8S_CLUSTER_NAME/
 
+          # Проверяем результат
+          echo "=== Final group_vars structure ==="
+          tree inventory/$K8S_CLUSTER_NAME
+
           # Копируем кастомные group_vars с сохранением структуры
           if [ -d "${{ github.workspace }}/resources/group_vars" ]; then
             rsync -av \
