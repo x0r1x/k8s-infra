@@ -174,13 +174,22 @@ jobs:
       - name: Update Kubeconfig Server Address
         working-directory: ./kubespray
         run: |
-          # Получаем внешний IP из инвентаря
-          EXTERNAL_IP=$(grep -A5 'master1:' inventory/$K8S_CLUSTER_NAME/hosts.yml | grep 'ansible_host:' | awk '{print $2}')
-
-          echo "Detected External IP: $EXTERNAL_IP"
+          # Точное извлечение IP только для master1
+          EXTERNAL_IP=$(awk '/master1:/,/ansible_host:/ {if ($1 == "ansible_host:") print $2}' inventory/$K8S_CLUSTER_NAME/hosts.yml)
           
-          # Заменяем внутренний адрес на внешний
-          sed -i "s|server:.*|server: https://${EXTERNAL_IP}:6443|g" ${{ github.workspace }}/tmp/kubeconfig/admin.conf
+          # Проверка IP
+          if [[ -z "$EXTERNAL_IP" ]]; then
+            echo "Error: IP not found!"
+            exit 1
+          fi
+          
+          echo "Master External IP: $EXTERNAL_IP"
+          
+          # Экранирование слэшей для sed
+          ESCAPED_IP=$(echo "$EXTERNAL_IP" | sed 's/[\/&]/\\&/g')
+          
+          # Замена с проверкой синтаксиса
+          sed -i "s|server:.*|server: https:\/\/${ESCAPED_IP}:6443|g" ${{ github.workspace }}/tmp/kubeconfig/admin.conf
   
       - name: Upload Modified Kubeconfig
         uses: actions/upload-artifact@v4
