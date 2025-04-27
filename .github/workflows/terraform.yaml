@@ -118,21 +118,10 @@ jobs:
           echo "=== Check repository structure ==="
           tree ${{ github.workspace }}/tmp
           tree ${{ github.workspace }}/resources
-          
+
           echo "=== Copy custom group_vars ==="
-          SRC_DIR="${{ github.workspace }}/resources/group_vars"
-          DST_DIR="inventory/$K8S_CLUSTER_NAME/group_vars"
-          
-          # Создаем базовую структуру каталогов
-          mkdir -p $DST_DIR
-          
-          # Рекурсивное копирование с сохранением структуры
-          if [ -d "$SRC_DIR" ]; then
-            find "$SRC_DIR" -type d -exec mkdir -p "$DST_DIR/{}" \;
-            find "$SRC_DIR" -type f -exec cp -fp "{}" "$DST_DIR/{}" \;
-          else
-            echo "Warning: No group_vars directory found in resources"
-          fi          
+          cp -f ${{ github.workspace }}/resources/group_vars/k8s_cluster/addons.yml inventory/$K8S_CLUSTER_NAME/group_vars/k8s_cluster/addons.yml
+          cp -f ${{ github.workspace }}/resources/group_vars/all/all.yml inventory/$K8S_CLUSTER_NAME/group_vars/all/all.yml 
           
           # Копируем наш инвентарь в директорию Kubespray
           echo "=== Copy inventory file ==="

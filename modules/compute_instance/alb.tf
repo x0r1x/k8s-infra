@@ -46,6 +46,7 @@ resource "yandex_alb_virtual_host" "virtual_host" {
 resource "yandex_alb_load_balancer" "alb" {
     name = "application-lb"
     network_id = var.network_id
+    security_group_ids = [var.security_group_id]
 
     allocation_policy {
         dynamic location {
