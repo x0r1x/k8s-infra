@@ -5,10 +5,11 @@ metadata:
   namespace: monitoring
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/proxy-redirect-from: "http://158.160.173.65/grafana/"
+    nginx.ingress.kubernetes.io/proxy-redirect-to: "/"
     nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_set_header Host $host;
-      proxy_set_header X-Forwarded-Proto $scheme;
       proxy_set_header X-Forwarded-Prefix /grafana;
+      proxy_set_header X-Forwarded-Proto $scheme;
 spec:
   ingressClassName: nginx
   rules:
