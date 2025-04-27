@@ -218,8 +218,9 @@ jobs:
 
         - name: Rename Kubeconfig
           run: |
-            ls -la /tmp/kubeconfig/
-            ls -la ${{ github.workspace }}/tmp/kubeconfig/
+            # Проверяем существование файла
+            echo "=== Check admin.conf file ==="
+            ls -la /tmp/kubeconfig/admin.conf
 
             mkdir -p ~/.kube
             cp -f /tmp/kubeconfig/admin.conf ~/.kube/config
