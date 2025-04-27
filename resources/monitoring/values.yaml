@@ -1,5 +1,7 @@
 grafana:
   enabled: true
+  service:
+    type: ClusterIP
   ingress:
     enabled: true
     ingressClassName: nginx
@@ -8,8 +10,6 @@ grafana:
     paths:
       - /grafana
     pathType: Prefix
-  service:
-      type: ClusterIP
 
 prometheus:
   penabled: true
