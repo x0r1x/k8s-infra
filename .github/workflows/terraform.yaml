@@ -69,8 +69,13 @@ jobs:
           name: kubespray-inventory
           path: tmp/inventory/
 
-      - name: Checkout Current Repository
+      - name: Checkout Resources
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            resources/
+          sparse-checkout-cone-mode: true
+          fetch-depth: 0
 
       - name: Checkout Kubespray
         uses: actions/checkout@v4
@@ -110,8 +115,8 @@ jobs:
           
           # Копируем шаблонные файлы
           cp -rfp inventory/sample/* inventory/$K8S_CLUSTER_NAME/
-          mv -f ${{ github.workspace }}/resources/group_vars/k8s_cluster/addons.yml inventory/$CLUSTER_NAME/group_vars/k8s_cluster/addons.yml
-          mv -f ${{ github.workspace }}/resources/group_vars/all/all.yml inventory/$CLUSTER_NAME/group_vars/all/all.yml          
+          mv -f ${{ github.workspace }}/resources/group_vars/k8s_cluster/addons.yml inventory/$K8S_CLUSTER_NAME/group_vars/k8s_cluster/addons.yml
+          mv -f ${{ github.workspace }}/resources/group_vars/all/all.yml inventory/$K8S_CLUSTER_NAME/group_vars/all/all.yml          
           
           # Копируем наш инвентарь в директорию Kubespray
           cp -f "${{ github.workspace }}/tmp/inventory/hosts.yml" "inventory/$K8S_CLUSTER_NAME/hosts.yml"
