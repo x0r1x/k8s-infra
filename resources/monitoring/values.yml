@@ -1,12 +1,14 @@
 grafana:
   enabled: true
   # Настройки Grafana.ini через отдельную секцию
-  #grafana.ini:
-    #server:
-      #root_url: "http://158.160.173.65/grafana/"
-      #root_url: "%(protocol)s://%(domain)s:%(http_port)s/grafana/"
-      #serve_from_sub_path: true  # Включаем обработку подпутей
-      #enforce_domain: false  # Отключает проверку домена
+  grafana.ini:
+    server:
+      root_url: "http://158.160.173.65/grafana/"
+      serve_from_sub_path: true
+      domain: 158.160.173.65
+      enforce_domain: true
+      http_port: 80
+      protocol: http
   # Настройки сервиса
   service:
     type: ClusterIP
