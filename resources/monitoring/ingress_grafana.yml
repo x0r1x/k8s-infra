@@ -6,7 +6,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/proxy-redirect: |
-      ~^/grafana/(.*) http://$host/grafana/$1
+      ~^/grafana/(.*) http://158.160.173.65/grafana/$1
     nginx.ingress.kubernetes.io/configuration-snippet: |
       proxy_set_header X-Forwarded-Prefix /grafana;
       proxy_set_header Host $host;
