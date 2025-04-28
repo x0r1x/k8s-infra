@@ -1,6 +1,4 @@
 grafana:
-  env:
-    GF_PATHS_CONFIG: /etc/grafana/grafana.ini
   enabled: true
   # Настройки Grafana.ini через отдельную секцию
   #grafana.ini:
