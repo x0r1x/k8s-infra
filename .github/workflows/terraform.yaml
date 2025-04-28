@@ -149,15 +149,15 @@ jobs:
         run: |
           ansible -i inventory/$K8S_CLUSTER_NAME/hosts.yml all -m ping -u ${{ secrets.YC_SSH_USERNAME }}
 
-      - name: Run Kubespray
-        working-directory: ./kubespray
-        run: |
-          # Запускаем kubespray
-          ansible-playbook -i inventory/$K8S_CLUSTER_NAME/hosts.yml \
-            --private-key ~/.ssh/id_rsa \
-            -u ${{ secrets.YC_SSH_USERNAME }} \
-            -b --become-user=root \
-            cluster.yml
+      # - name: Run Kubespray
+      #   working-directory: ./kubespray
+      #   run: |
+      #     # Запускаем kubespray
+      #     ansible-playbook -i inventory/$K8S_CLUSTER_NAME/hosts.yml \
+      #       --private-key ~/.ssh/id_rsa \
+      #       -u ${{ secrets.YC_SSH_USERNAME }} \
+      #       -b --become-user=root \
+      #       cluster.yml
 
       - name: Retrieve Kubeconfig from Master
         working-directory: ./kubespray
