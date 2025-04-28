@@ -9,7 +9,7 @@ metadata:
       ~^/grafana/(.*) http://158.160.173.65/grafana/$1
     nginx.ingress.kubernetes.io/configuration-snippet: |
       proxy_set_header X-Forwarded-Prefix /grafana;
-      proxy_set_header Host $host;
+      proxy_set_header Host 158.160.173.65;
 spec:
   ingressClassName: nginx
   rules:
