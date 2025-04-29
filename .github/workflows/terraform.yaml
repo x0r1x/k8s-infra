@@ -249,6 +249,3 @@ jobs:
               --create-namespace \
               -n monitoring \
               --kubeconfig ~/.kube/config
-
-        # - name: Deploy Grafana Ingress
-        #   run: kubectl apply -f ${{ github.workspace }}/resources/monitoring/ingress_grafana.yml 

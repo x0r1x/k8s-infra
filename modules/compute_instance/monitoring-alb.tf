@@ -1,11 +1,11 @@
 # Создание Backend Group для ALB
-resource "yandex_alb_backend_group" "backend_group" {
-    name = "backend-group"
+resource "yandex_alb_backend_group" "mon_backend_group" {
+    name = "mon-backend-group"
 
     http_backend {
-        name             = "http-backend"
+        name             = "mon-http-backend"
         weight           = 1
-        port             = 80
+        port             = 24807
         target_group_ids = [yandex_compute_instance_group.node.application_load_balancer[0].target_group_id]
 
         healthcheck {
@@ -13,7 +13,7 @@ resource "yandex_alb_backend_group" "backend_group" {
             interval = "2s"
 
             http_healthcheck {
-                path = "/" # Проверка корневого пути
+                path = "/api/health" # Проверка корневого пути
             }
         }
     }
@@ -22,29 +22,29 @@ resource "yandex_alb_backend_group" "backend_group" {
 }
 
 # Создание HTTP Router для ALB
-resource "yandex_alb_http_router" "router" {
-    name = "http-router"
+resource "yandex_alb_http_router" "mon_router" {
+    name = "mon-http-router"
 }
 
 # Создание Virtual Host для ALB
-resource "yandex_alb_virtual_host" "virtual_host" {
-    name           = "virtual-host"
+resource "yandex_alb_virtual_host" "mon_virtual_host" {
+    name           = "mon-virtual-host"
     http_router_id = yandex_alb_http_router.router.id
 
     route {
-        name = "route"
+        name = "mon-route"
         http_route {
             http_route_action {
-                backend_group_id = yandex_alb_backend_group.backend_group.id
+                backend_group_id = yandex_alb_backend_group.mon_backend_group.id
             }
         }
     }
-    depends_on = [yandex_alb_backend_group.backend_group] # Явная зависимость
+    depends_on = [yandex_alb_backend_group.mon_backend_group] # Явная зависимость
 }
 
 # Создание Application Load Balancer (ALB)
-resource "yandex_alb_load_balancer" "alb" {
-    name = "application-lb"
+resource "yandex_alb_load_balancer" "mon_alb" {
+    name = "mon-alb"
     network_id = var.network_id
     security_group_ids = [var.security_group_id]
 
@@ -59,7 +59,7 @@ resource "yandex_alb_load_balancer" "alb" {
     }
 
     listener {
-        name = "http-listener"
+        name = "mon-http-listener"
         endpoint {
             address {
                 external_ipv4_address {}
@@ -68,9 +68,9 @@ resource "yandex_alb_load_balancer" "alb" {
         }
         http {
             handler {
-                http_router_id = yandex_alb_http_router.router.id
+                http_router_id = yandex_alb_http_router.mon_router.id
             }
         }
     }
-    depends_on = [yandex_alb_http_router.router] # Явная зависимость
+    depends_on = [yandex_alb_http_router.mon_router] # Явная зависимость
 }

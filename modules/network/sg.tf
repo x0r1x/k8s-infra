@@ -7,7 +7,6 @@ resource "yandex_vpc_security_group" "k8s_sg" {
     protocol          = "TCP"
     description       = "healthchecks"
     predefined_target = "loadbalancer_healthchecks"
-    port              = 30080
   }
 
   ingress {
@@ -50,11 +49,19 @@ resource "yandex_vpc_security_group" "k8s_sg" {
     v4_cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # ingress {
+  #   protocol       = "TCP"
+  #   description    = "NodePort services"
+  #   from_port      = 30000
+  #   to_port        = 32767
+  #   v4_cidr_blocks = ["0.0.0.0/0"]
+  # }
+
   ingress {
     protocol       = "TCP"
     description    = "NodePort services"
-    from_port      = 30000
-    to_port        = 32767
+    from_port      = 20000
+    to_port        = 25000
     v4_cidr_blocks = ["0.0.0.0/0"]
   }
 
