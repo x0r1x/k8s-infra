@@ -35,8 +35,11 @@ resource "yandex_alb_virtual_host" "app_virtual_host" {
         name = "app-route"
         http_route {
             # Условие совпадения пути
+            # route.http_route.http_match.path
             http_match {
-                path_prefix = "/app" # Запросы, начинающиеся с /app
+                path {
+                    prefix = "/app"
+                }
             }
             # Действие маршрута
             http_route_action {
