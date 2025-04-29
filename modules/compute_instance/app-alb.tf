@@ -13,7 +13,7 @@ resource "yandex_alb_backend_group" "app_backend_group" {
             interval = "2s"
 
             http_healthcheck {
-                path = "/" # Проверка корневого пути
+                path = "/app" # Проверка корневого пути
             }
         }
     }
@@ -33,6 +33,11 @@ resource "yandex_alb_virtual_host" "app_virtual_host" {
 
     route {
         name = "app-route"
+        # Условие совпадения пути
+        http_match {
+            path_prefix = "/app" # Запросы, начинающиеся с /app
+        }
+        # Действие маршрута
         http_route {
             http_route_action {
                 backend_group_id = yandex_alb_backend_group.app_backend_group.id
