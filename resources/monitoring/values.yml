@@ -1,6 +1,23 @@
 grafana:
   enabled: true
-  
+  # Конфигурация сервиса
+  service:
+    type: ClusterIP
+    port: 8080
+    targetPort: 3000
+  # Конфигурация Ingress
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /
+    paths:
+      - path: /
+        pathType: Prefix
+  env:
+    GF_SERVER_ROOT_URL: "/grafana"
+    GF_SERVER_SERVE_FROM_SUB_PATH: "true"
+
 prometheus:
   penabled: true
 
