@@ -36,6 +36,9 @@ jobs:
           terraform init -reconfigure \
             -backend-config="bucket=$TF_VAR_YC_S3_BUCKET"
 
+      - name: Refresh State
+        run: terraform refresh
+
       - name: Validate State
         run: terraform plan
 
