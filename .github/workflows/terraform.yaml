@@ -36,6 +36,20 @@ jobs:
           terraform init -reconfigure \
             -backend-config="bucket=$TF_VAR_YC_S3_BUCKET"
 
+
+      - name: Cleanup Terraform State
+        run: |
+          terraform state rm module.compute_instance.yandex_compute_image.vm_images
+          terraform state rm module.container_registry.yandex_container_registry.main
+          terraform state rm module.network.yandex_vpc_network.network
+          terraform state rm module.network.yandex_vpc_gateway.nat_gateway
+          terraform state rm yandex_alb_load_balancer.application-lb
+          terraform state rm yandex_alb_backend_group.backend-group
+          terraform state rm yandex_alb_http_router.http-router
+
+      - name: Validate State
+        run: terraform plan
+
       - name: Terraform Apply
         run: terraform apply -auto-approve -input=false
 
