@@ -29,7 +29,7 @@ resource "yandex_alb_http_router" "app_router" {
 # Создание Virtual Host для ALB
 resource "yandex_alb_virtual_host" "app_virtual_host" {
     name           = "app-virtual-host"
-    http_router_id = yandex_alb_http_router.router.id
+    http_router_id = yandex_alb_http_router.app_router.id
 
     route {
         name = "app-route"
