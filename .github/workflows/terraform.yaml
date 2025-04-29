@@ -36,6 +36,13 @@ jobs:
           terraform init -reconfigure \
             -backend-config="bucket=$TF_VAR_YC_S3_BUCKET"
 
+
+      - name: Cleanup Terraform State
+        run: |
+          terraform state rm yandex_alb_load_balancer.application-lb
+          terraform state rm yandex_alb_backend_group.backend-group
+          terraform state rm yandex_alb_http_router.http-router
+
       - name: Refresh State
         run: terraform refresh
 
