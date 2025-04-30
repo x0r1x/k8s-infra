@@ -14,13 +14,13 @@ resource "yandex_container_registry" "main" {
 resource "yandex_container_registry_iam_binding" "pull_access" {
   registry_id = yandex_container_registry.main.id
   role        = "container-registry.images.puller"
-  members     = ["serviceAccount:${val.service_account_id}"]
+  members     = ["serviceAccount:${var.service_account_id}"]
 }
 
 resource "yandex_container_registry_iam_binding" "push_access" {
   registry_id = yandex_container_registry.main.id
   role        = "container-registry.images.pusher"
-  members     = ["serviceAccount:${val.service_account_id}"]
+  members     = ["serviceAccount:${var.service_account_id}"]
 }
 
 resource "yandex_container_repository" "app_repo" {
