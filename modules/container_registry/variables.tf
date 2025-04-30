@@ -12,3 +12,8 @@ variable "repository_name" {
   type        = string
   description = "Name for repository"
 }
+
+variable "service_account_id" {
+  type = string
+  sensitive = true
+}

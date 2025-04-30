@@ -42,6 +42,7 @@ module "container_registry" {
   folder_id          = var.yc_folder_id
   registry_name      = var.registry.registry_name
   repository_name    = var.registry.repository_name
+  service_account_id = var.yc_sa_id
 }
 
 module "compute_instance" {
